@@ -124,8 +124,9 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
   const [email, setEmail] = useState("");
   const [date, setDate] = useState("");
   const [message, setMessage] = useState("");
-  const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [toast, setToast] = useState<string | null>(null);
 
   const titleId = useId();
   const nameId = useId();
@@ -160,9 +161,10 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
     setEmail("");
     setDate("");
     setMessage("");
-    setSent(false);
     setSending(false);
+    setSubmitError(null);
     submitLockRef.current = false;
+    setToast(null);
     setMounted(true);
     requestAnimationFrame(() => {
       requestAnimationFrame(() => setActive(true));
@@ -186,6 +188,12 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
       document.body.style.overflow = prev;
     };
   }, [mounted]);
+
+  useEffect(() => {
+    if (!toast) return;
+    const t = window.setTimeout(() => setToast(null), 6500);
+    return () => window.clearTimeout(t);
+  }, [toast]);
 
   const canSubmit = useMemo(() => {
     return (
@@ -299,6 +307,7 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
                       }
                       submitLockRef.current = true;
                       setSending(true);
+                      setSubmitError(null);
                       try {
                         const payload = {
                           name,
@@ -321,6 +330,7 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
                           ok?: boolean;
                           error?: string;
                           missing?: string[];
+                          message?: string;
                         };
                         console.log(
                           "[booking modal] response",
@@ -335,14 +345,30 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
                           );
                           submitLockRef.current = false;
                           setSending(false);
+                          const fallback =
+                            res.status === 503
+                              ? "Formuläret är inte konfigurerat för e-post än. Ring oss gärna."
+                              : "Det gick inte att skicka förfrågan. Försök igen.";
+                          setSubmitError(
+                            typeof data.message === "string" && data.message
+                              ? data.message
+                              : fallback,
+                          );
                           return;
                         }
-                        setSent(true);
+                        submitLockRef.current = false;
                         setSending(false);
+                        setToast(
+                          "Förfrågan skickad! Vi återkommer så snart som möjligt.",
+                        );
+                        closeBookingModal();
                       } catch (err) {
                         console.error("[booking modal] network error", err);
                         submitLockRef.current = false;
                         setSending(false);
+                        setSubmitError(
+                          "Nätverksfel — kontrollera uppkopplingen och försök igen.",
+                        );
                       }
                     }}
                   >
@@ -406,12 +432,12 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
                       />
                     </div>
 
-                    {sent ? (
-                      <div className="rounded-2xl border border-[#7ea2ff]/30 bg-white/[0.06] p-4 text-sm text-white/90">
-                        <div className="font-extrabold">Skickat!</div>
-                        <div className="mt-1 text-white/75">
-                          Tack — vi återkommer så snart vi kan.
-                        </div>
+                    {submitError ? (
+                      <div
+                        className="rounded-2xl border border-rose-400/35 bg-rose-950/40 p-4 text-sm text-rose-100/95"
+                        role="alert"
+                      >
+                        {submitError}
                       </div>
                     ) : null}
 
@@ -441,6 +467,19 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      ) : null}
+
+      {toast ? (
+        <div
+          className="pointer-events-none fixed bottom-6 left-1/2 z-[200] w-[min(22rem,calc(100vw-2rem))] -translate-x-1/2 px-3"
+          role="status"
+          aria-live="polite"
+        >
+          <div className="pointer-events-auto rounded-2xl border border-[#7ea2ff]/35 bg-[#050A1A]/95 px-5 py-4 text-center text-sm leading-relaxed text-white shadow-[0_28px_80px_-20px_rgba(31,92,255,0.55)] ring-1 ring-white/10 backdrop-blur-md">
+            <div className="font-extrabold text-white">Tack!</div>
+            <div className="mt-1 text-white/85">{toast}</div>
           </div>
         </div>
       ) : null}
