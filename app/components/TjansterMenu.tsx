@@ -15,7 +15,6 @@ const tjansterItems: TjansterItem[] = [
   { label: "Underhållning", href: "/tjanster/underhallning" },
   { label: "Hoppborgar", href: "/tjanster/hoppborgar" },
   { label: "Fyrverkeri", href: "/tjanster/fyrverkeri" },
-  { label: "Festlokal", href: "/festlokal" },
 ];
 
 export function TjansterMenu() {

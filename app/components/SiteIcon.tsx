@@ -9,7 +9,8 @@ type IconName =
   | "people"
   | "spark"
   | "grid"
-  | "music";
+  | "music"
+  | "calendar";
 
 export function SiteIcon({
   name,
@@ -185,6 +186,29 @@ export function SiteIcon({
         <rect x="13" y="3" width="8" height="8" rx="2" />
         <rect x="3" y="13" width="8" height="8" rx="2" />
         <rect x="13" y="13" width="8" height="8" rx="2" />
+      </svg>
+    );
+  }
+
+  if (name === "calendar") {
+    return (
+      <svg
+        className={cn}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <rect x="3" y="5" width="18" height="16" rx="2.5" />
+        <path d="M3 10h18" />
+        <path d="M8 3v4" />
+        <path d="M16 3v4" />
+        <circle cx="8" cy="15" r="1" fill="currentColor" stroke="none" />
+        <circle cx="12" cy="15" r="1" fill="currentColor" stroke="none" />
+        <circle cx="16" cy="15" r="1" fill="currentColor" stroke="none" />
       </svg>
     );
   }

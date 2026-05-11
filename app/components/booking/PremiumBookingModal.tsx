@@ -86,6 +86,78 @@ function Input({
   );
 }
 
+function DateInput({
+  id,
+  value,
+  onChange,
+}: {
+  id: string;
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const openPicker = () => {
+    const el = inputRef.current;
+    if (!el) return;
+    try {
+      type WithShowPicker = HTMLInputElement & { showPicker?: () => void };
+      const sp = (el as WithShowPicker).showPicker;
+      if (typeof sp === "function") sp.call(el);
+      else el.focus();
+    } catch {
+      el.focus();
+    }
+  };
+
+  return (
+    <div
+      className={[
+        "group relative flex h-11 w-full items-center gap-1 rounded-xl border-2 border-white/15 bg-[#050A1A]/60 pl-3 pr-1 text-sm text-white",
+        "ring-1 ring-transparent transition",
+        "hover:border-[#7ea2ff]/45 hover:bg-[#0a1733]/55",
+        "focus-within:border-[#7ea2ff]/65 focus-within:bg-[#0a1733]/70 focus-within:ring-[#7ea2ff]/35 focus-within:shadow-[0_18px_60px_-30px_rgba(31,92,255,0.65)]",
+      ].join(" ")}
+    >
+      <SiteIcon
+        name="calendar"
+        className="pointer-events-none mr-1 h-4 w-4 shrink-0 text-[#9bb8ff] transition group-hover:text-white"
+      />
+      <input
+        ref={inputRef}
+        id={id}
+        type="date"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        aria-label="Datum för förfrågan"
+        className={[
+          "h-full min-w-0 flex-1 bg-transparent px-1 text-sm outline-none",
+          value ? "text-white" : "text-white/55",
+          "[&::-webkit-calendar-picker-indicator]:absolute",
+          "[&::-webkit-calendar-picker-indicator]:inset-0",
+          "[&::-webkit-calendar-picker-indicator]:h-full",
+          "[&::-webkit-calendar-picker-indicator]:w-full",
+          "[&::-webkit-calendar-picker-indicator]:cursor-pointer",
+          "[&::-webkit-calendar-picker-indicator]:opacity-0",
+          "[color-scheme:dark]",
+        ].join(" ")}
+      />
+      <button
+        type="button"
+        onClick={openPicker}
+        aria-label="Öppna datumväljare"
+        className={[
+          "relative z-10 grid h-10 w-11 shrink-0 place-items-center rounded-lg bg-white/[0.06] text-[#cfdcff] ring-1 ring-white/10",
+          "transition hover:bg-[#1f5cff]/30 hover:text-white hover:ring-[#7ea2ff]/45",
+          "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#7ea2ff]/65",
+        ].join(" ")}
+      >
+        <SiteIcon name="calendar" className="h-5 w-5" />
+      </button>
+    </div>
+  );
+}
+
 function TextArea({
   id,
   value,
@@ -406,9 +478,8 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
                       </div>
                       <div className="grid gap-2">
                         <FieldLabel htmlFor={dateId}>DATUM</FieldLabel>
-                        <Input
+                        <DateInput
                           id={dateId}
-                          type="date"
                           value={date}
                           onChange={setDate}
                         />
