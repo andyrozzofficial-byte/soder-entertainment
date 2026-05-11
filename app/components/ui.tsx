@@ -57,16 +57,50 @@ export const ctaCard = [
 ].join(" ");
 
 export const glassCard =
-  "rounded-2xl border border-white/10 bg-white/[0.035] shadow-[0_60px_160px_-120px_rgba(0,0,0,0.9)] transform-gpu transition-[transform,box-shadow,border-color,background-color] duration-500 ease-out [backface-visibility:hidden]";
+  "isolate overflow-hidden rounded-2xl border border-white/10 bg-white/[0.035] shadow-[0_60px_160px_-120px_rgba(0,0,0,0.9)] transform-gpu transition-[transform,box-shadow,border-color,background-color] duration-500 ease-out [backface-visibility:hidden]";
 
 export const glassCardHover =
   "hover:-translate-y-1.5 hover:border-[#7ea2ff]/55 hover:bg-white/[0.045] hover:shadow-[0_90px_240px_-150px_rgba(31,92,255,0.7)]";
 
 export const glassCardDark =
-  "rounded-2xl border border-white/10 bg-[#050A1A]/55 shadow-[0_60px_170px_-140px_rgba(0,0,0,0.92)] transform-gpu transition-[transform,box-shadow,border-color,background-color] duration-500 ease-out [backface-visibility:hidden]";
+  "isolate overflow-hidden rounded-2xl border border-white/10 bg-[#050A1A]/55 shadow-[0_60px_170px_-140px_rgba(0,0,0,0.92)] transform-gpu transition-[transform,box-shadow,border-color,background-color] duration-500 ease-out [backface-visibility:hidden]";
 
 export const glassCardDarkHover =
   "hover:-translate-y-1 hover:border-[#7ea2ff]/45 hover:shadow-[0_90px_240px_-160px_rgba(31,92,255,0.7)]";
+
+/**
+ * Wrapper around image/media inside glass cards — clips scaled layers and
+ * avoids subpixel seams at rounded corners or column joins.
+ */
+export const cardMediaClip =
+  "relative isolate w-full overflow-hidden transform-gpu [contain:paint]";
+
+/**
+ * Full-bleed background image that scales on `.group` hover. Negative inset
+ * keeps edges covered during transform so no hairline shows past the clip.
+ */
+export const cardBgImageHoverScale =
+  "absolute inset-[-4px] origin-center bg-cover bg-center bg-no-repeat transform-gpu [backface-visibility:hidden] [will-change:transform] transition-transform duration-1000 ease-out group-hover:scale-[1.03]";
+
+/**
+ * `next/image` fill + object-cover inside {@link cardMediaClip}. Slight
+ * default overscale + GPU compositing matches home/product card behaviour.
+ */
+export const cardNextImageHover =
+  "object-cover object-center origin-center transform-gpu [backface-visibility:hidden] [will-change:transform] transition-transform duration-1000 ease-out scale-[1.02] group-hover:scale-[1.05]";
+
+/** Outer split showcase row (image + copy) on service category pages. */
+export const splitShowcaseCard =
+  "group relative isolate overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] shadow-[0_70px_200px_-160px_rgba(0,0,0,0.92)] transform-gpu transition-[transform,box-shadow,border-color,background-color] duration-700 ease-out [backface-visibility:hidden] hover:-translate-y-1 hover:border-[#7ea2ff]/35 hover:shadow-[0_100px_260px_-170px_rgba(31,92,255,0.55)]";
+
+export const splitShowcaseGrid =
+  "grid min-w-0 items-stretch gap-0 [isolation:isolate] md:grid-cols-2";
+
+export const splitShowcaseImageCell =
+  "relative min-h-[320px] min-w-0 overflow-hidden md:min-h-[420px]";
+
+export const splitShowcaseContentCell =
+  "relative min-w-0 p-7 sm:p-12";
 
 export function SectionGlow({
   variant = "primary",

@@ -170,7 +170,7 @@ export default function FestlokalPage() {
           {highlights.map((h) => (
             <article
               key={h.title}
-              className={`group relative flex h-full flex-col overflow-hidden px-7 pb-8 pt-9 text-center sm:px-8 ${glassCard} ${glassCardHover}`}
+              className={`group relative flex h-full flex-col px-7 pb-8 pt-9 text-center sm:px-8 ${glassCard} ${glassCardHover}`}
             >
               <HairlineTop />
 

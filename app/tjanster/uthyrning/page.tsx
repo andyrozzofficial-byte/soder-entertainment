@@ -583,7 +583,7 @@ function CategoryNavCard({ c }: { c: RentalCategory }) {
   return (
     <a
       href={`#cat-${c.key}`}
-      className={`group relative flex h-full flex-col overflow-hidden p-6 ${glassCard} ${glassCardHover}`}
+              className={`group relative flex h-full flex-col p-6 ${glassCard} ${glassCardHover}`}
     >
       <HairlineTop />
       <div className="flex items-center gap-3">

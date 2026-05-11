@@ -5,6 +5,7 @@ import { SiteFooter } from "@/app/components/SiteFooter";
 import { SiteHeroShell, HeroPrimaryCta } from "@/app/components/SiteHeroShell";
 import { SiteIcon } from "@/app/components/SiteIcon";
 import {
+  cardMediaClip,
   eyebrow,
   glassCard,
   glassCardHover,
@@ -135,12 +136,12 @@ export default function HomePage() {
             <Link
               key={s.title}
               href={s.href}
-              className={`group relative flex h-full flex-col overflow-hidden ${glassCard} ${glassCardHover}`}
+              className={`group relative flex h-full flex-col ${glassCard} ${glassCardHover}`}
             >
               <HairlineTop />
-              <div className="relative h-56 w-full overflow-hidden sm:h-64">
+              <div className={`h-56 w-full sm:h-64 ${cardMediaClip}`}>
                 <div
-                  className={`absolute inset-0 bg-cover bg-center transform-gpu [backface-visibility:hidden] [will-change:transform] transition-transform duration-1000 ease-out ${s.imageScaleClass ?? DEFAULT_IMAGE_SCALE} ${s.imageFilter ?? DEFAULT_IMAGE_FILTER}`}
+                  className={`absolute inset-[-4px] bg-cover bg-center transform-gpu [backface-visibility:hidden] [will-change:transform] transition-transform duration-1000 ease-out ${s.imageScaleClass ?? DEFAULT_IMAGE_SCALE} ${s.imageFilter ?? DEFAULT_IMAGE_FILTER}`}
                   style={{ backgroundImage: `url("${s.imageUrl}")` }}
                   aria-hidden="true"
                 />

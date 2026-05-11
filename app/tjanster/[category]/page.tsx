@@ -10,6 +10,7 @@ import { SiteFooter } from "@/app/components/SiteFooter";
 import { SiteHeroShell } from "@/app/components/SiteHeroShell";
 import { SiteIcon } from "@/app/components/SiteIcon";
 import {
+  cardBgImageHoverScale,
   ctaPrimary,
   ctaPrimaryCompact,
   ctaSecondaryCompact,
@@ -20,6 +21,10 @@ import {
   glassCardDarkHover,
   sectionHeading,
   SectionGlow,
+  splitShowcaseCard,
+  splitShowcaseContentCell,
+  splitShowcaseGrid,
+  splitShowcaseImageCell,
 } from "@/app/components/ui";
 
 type InfoCard = {
@@ -759,33 +764,30 @@ export default async function ServiceCategoryPage({
         <section className="mx-auto w-full max-w-6xl px-4 pb-14 sm:pb-16">
           <div className="grid gap-6 lg:gap-8">
             {data.showcase.map((b, idx) => (
-              <div
-                key={b.title}
-                className="group rounded-2xl border border-white/10 bg-white/[0.03] overflow-hidden shadow-[0_70px_200px_-160px_rgba(0,0,0,0.92)] transition-all duration-700 ease-out hover:-translate-y-1 hover:border-[#7ea2ff]/35 hover:shadow-[0_100px_260px_-170px_rgba(31,92,255,0.55)]"
-              >
-                <div className="grid items-stretch gap-0 md:grid-cols-2">
+              <div key={b.title} className={splitShowcaseCard}>
+                <div className={splitShowcaseGrid}>
                   <div
                     className={[
-                      "relative min-h-[320px] md:min-h-[420px]",
+                      splitShowcaseImageCell,
                       idx % 2 === 1 ? "md:order-2" : "",
                     ].join(" ")}
                   >
                     <div
-                      className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000 ease-out group-hover:scale-[1.03]"
+                      className={cardBgImageHoverScale}
                       style={{ backgroundImage: `url(${b.imageUrl})` }}
                       aria-hidden="true"
                     />
                     <div
-                      className="absolute inset-0 bg-gradient-to-b from-[#050A1A]/30 via-[#050A1A]/30 to-[#050A1A]/90"
+                      className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#050A1A]/30 via-[#050A1A]/30 to-[#050A1A]/90"
                       aria-hidden="true"
                     />
                     <div
-                      className="absolute inset-0 shadow-[inset_0_-80px_120px_rgba(5,10,26,0.95)]"
+                      className="pointer-events-none absolute inset-0 shadow-[inset_0_-80px_120px_rgba(5,10,26,0.95)]"
                       aria-hidden="true"
                     />
                   </div>
 
-                  <div className="p-7 sm:p-12">
+                  <div className={splitShowcaseContentCell}>
                     <div className={eyebrow}>SHOWCASE</div>
                     <h3 className="mt-3 text-balance text-2xl font-extrabold tracking-tight">
                       {b.title}

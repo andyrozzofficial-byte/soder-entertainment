@@ -4,6 +4,7 @@ import Image from "next/image";
 
 import { useBookingModal } from "@/app/components/booking/PremiumBookingModal";
 import {
+  cardNextImageHover,
   ctaPrimaryCompact,
   eyebrow,
   glassCard,
@@ -44,23 +45,21 @@ export function ProductBookingGrid({
         {items.map((p) => (
           <div
             key={p.title}
-            className={`group relative flex h-full flex-col overflow-hidden p-6 backdrop-blur ${glassCard} ${glassCardHover}`}
+            className={`group relative flex h-full flex-col p-6 backdrop-blur ${glassCard} ${glassCardHover}`}
           >
-            <div className="relative overflow-hidden rounded-xl border border-white/10 bg-[#050A1A]/35">
-              <div className="relative aspect-[4/3] w-full">
+            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-white/10 bg-[#050A1A]/35 isolate transform-gpu [contain:paint]">
                 <Image
                   src={p.imageUrl}
                   alt={p.title}
                   fill
-                  className="object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.04]"
+                  className={cardNextImageHover}
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
+                <div
+                  className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#050A1A]/75"
+                  aria-hidden="true"
+                />
               </div>
-              <div
-                className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#050A1A]/75"
-                aria-hidden="true"
-              />
-            </div>
 
             <div className="mt-5 flex items-start justify-between gap-4">
               <h3 className="text-base font-extrabold tracking-tight text-white">
