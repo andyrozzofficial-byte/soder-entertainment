@@ -118,6 +118,17 @@ export function SiteFooter({ services }: { services: string[] }) {
           © {new Date().getFullYear()} Söder Entertainment. Alla rättigheter
           förbehållna.
         </div>
+        <div className="mt-2 text-center text-[11px] tracking-[0.04em] text-white/30">
+          Design &amp; utveckling av{" "}
+          <a
+            href="https://lunov.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white/45 underline-offset-4 transition-colors hover:text-white/80 hover:underline"
+          >
+            Lunov
+          </a>
+        </div>
       </div>
     </footer>
   );
