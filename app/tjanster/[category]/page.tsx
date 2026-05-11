@@ -573,14 +573,14 @@ const categories: Record<string, CategoryContent> = {
         text: "Fyrverkeri är mer än smällar – det är en upplevelse. Vi hjälper er planera för en dramatisk och säker avslutning.",
         bullets: ["Planera i god tid", "Kvalitet & säkerhet", "Tydlig process"],
         imageUrl:
-          "https://images.unsplash.com/photo-1516455590571-18256e5bb9ff?auto=format&fit=crop&w=2000&q=80",
+          "https://images.unsplash.com/photo-1761155228473-5338746e7968?auto=format&fit=crop&w=2000&q=80",
       },
       {
         title: "Tillstånd & praktiskt",
         text: "Tillstånd krävs i de flesta fall (undantag vissa högtider). Vi hjälper er förstå vad som behövs och när.",
         bullets: ["Ansökan via polisen", "Undantag vid vissa datum", "Kostnad ca 700 kr"],
         imageUrl:
-          "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=2000&q=80",
+          "https://images.unsplash.com/photo-1765193634376-6c5f56ba030e?auto=format&fit=crop&w=2000&q=80",
       },
     ],
     details: {
