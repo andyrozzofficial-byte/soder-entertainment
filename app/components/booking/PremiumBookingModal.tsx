@@ -135,6 +135,7 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
   const messageId = useId();
 
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const submitLockRef = useRef(false);
 
   const closeBookingModal = useCallback(() => {
     setActive(false);
@@ -159,6 +160,7 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
     setDate("");
     setMessage("");
     setSent(false);
+    submitLockRef.current = false;
     setMounted(true);
     requestAnimationFrame(() => {
       requestAnimationFrame(() => setActive(true));
@@ -267,10 +269,41 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
 
                   <form
                     className="mt-7 grid gap-5"
-                    onSubmit={(e) => {
+                    onSubmit={async (e) => {
                       e.preventDefault();
-                      if (!canSubmit) return;
-                      setSent(true);
+                      if (!canSubmit || submitLockRef.current) return;
+                      submitLockRef.current = true;
+                      try {
+                        const res = await fetch("/api/booking", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({
+                            name,
+                            phone,
+                            email,
+                            date,
+                            subject,
+                            message,
+                          }),
+                        });
+                        const data = (await res.json().catch(() => ({}))) as {
+                          ok?: boolean;
+                          error?: string;
+                        };
+                        if (!res.ok) {
+                          console.error(
+                            "[booking modal] submit failed",
+                            res.status,
+                            data,
+                          );
+                          submitLockRef.current = false;
+                          return;
+                        }
+                        setSent(true);
+                      } catch (err) {
+                        console.error("[booking modal] network error", err);
+                        submitLockRef.current = false;
+                      }
                     }}
                   >
                     <div className="grid gap-4 sm:grid-cols-2">
