@@ -26,24 +26,21 @@ export function SiteFooter({ services }: { services: string[] }) {
             <div className="mt-5 flex items-center gap-3 text-white/60">
               <a
                 className="grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition"
-                href="#"
+                href="https://facebook.com/Soderentertainment"
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="Facebook"
               >
                 f
               </a>
               <a
                 className="grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition"
-                href="#"
+                href="https://www.instagram.com/soderentertainment?igsh=MXdudjU4eThsZ2E4aw=="
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="Instagram"
               >
                 ☐
-              </a>
-              <a
-                className="grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition"
-                href="#"
-                aria-label="YouTube"
-              >
-                ▶
               </a>
             </div>
           </div>
