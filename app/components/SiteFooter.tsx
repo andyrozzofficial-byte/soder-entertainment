@@ -64,11 +64,6 @@ export function SiteFooter({ services }: { services: string[] }) {
                 </Link>
               </li>
               <li>
-                <Link className="hover:text-white transition-colors" href="/#tjanster">
-                  Galleri
-                </Link>
-              </li>
-              <li>
                 <FooterBookingLink className="text-left text-sm text-white/65 hover:text-white transition-colors">
                   Kontakt
                 </FooterBookingLink>

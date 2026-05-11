@@ -65,12 +65,6 @@ export function SiteHeroShell({
                 HEM
               </Link>
               <TjansterMenu />
-              <Link
-                className="hover:text-white transition-colors"
-                href="/#tjanster"
-              >
-                GALLERI
-              </Link>
               <NavKontaktButton />
             </nav>
           </div>

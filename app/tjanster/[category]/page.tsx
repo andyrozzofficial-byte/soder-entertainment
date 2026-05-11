@@ -217,7 +217,7 @@ const categories: Record<string, CategoryContent> = {
         text: "Vi levererar en helhetslösning där ljud, el och logistik fungerar – så ni kan fokusera på festen.",
         bullets: ["Lastbil + chaufför", "Ljudpaket i rätt nivå", "El-aggregat ingår"],
         imageUrl:
-          "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=2000&q=80",
+          "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=2000&q=80",
       },
       {
         title: "Rätt tryck för er klass",
