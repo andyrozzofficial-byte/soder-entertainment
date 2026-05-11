@@ -20,6 +20,11 @@ export const metadata: Metadata = {
   title: "Söder Entertainment",
   description:
     "Event & upplevelser som folk minns – ljud, ljus, show och fyrverkeri.",
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
