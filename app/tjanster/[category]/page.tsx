@@ -400,7 +400,7 @@ const categories: Record<string, CategoryContent> = {
         text: "Vi sätter rätt nivå för publik och format – från elegant lounge till full klubbenergi.",
         bullets: ["Artist/DJ-matchning", "Teknik vid behov", "Tydlig leverans"],
         imageUrl:
-          "https://images.unsplash.com/photo-1521337706264-a414f153a5b6?auto=format&fit=crop&w=2000&q=80",
+          "https://images.unsplash.com/photo-1624929303661-22c5bce0169b?auto=format&fit=crop&w=2000&q=80",
       },
       {
         title: "Catering & personal",
