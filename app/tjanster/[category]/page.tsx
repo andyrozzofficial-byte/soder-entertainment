@@ -187,7 +187,7 @@ const categories: Record<string, CategoryContent> = {
       "Kompletta studentflak som syns och hörs – från “skön studentkänsla” till tungt partyflak.",
     icon: "cap",
     includes: ["Studentflak"],
-    overviewTitle: "Allt för ett lyckat studentflak",
+    overviewTitle: "Ett studentflak som syns, hörs och känns",
     overviewCards: [
       {
         title: "Komplett helhetslösning",
