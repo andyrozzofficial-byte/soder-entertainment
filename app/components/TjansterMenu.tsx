@@ -10,7 +10,7 @@ type TjansterItem = {
 
 const tjansterItems: TjansterItem[] = [
   { label: "Event & fest", href: "/tjanster/event-fest" },
-  { label: "Student", href: "/tjanster/student" },
+  { label: "Studentflak", href: "/tjanster/student" },
   { label: "Uthyrning", href: "/tjanster/uthyrning" },
   { label: "Underhållning", href: "/tjanster/underhallning" },
   { label: "Hoppborgar", href: "/tjanster/hoppborgar" },

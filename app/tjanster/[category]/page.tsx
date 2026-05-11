@@ -182,7 +182,7 @@ const categories: Record<string, CategoryContent> = {
     },
   },
   student: {
-    title: "Student",
+    title: "Studentflak",
     intro:
       "Kompletta studentflak som syns och hörs – från “skön studentkänsla” till tungt partyflak.",
     icon: "cap",
