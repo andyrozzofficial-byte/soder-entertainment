@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
 
+/** Env is read at request time; avoid any static bundling assumptions for secrets. */
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 const LOG_PREFIX = "[booking]";
 
 type BookingBody = {
@@ -12,7 +16,23 @@ type BookingBody = {
 };
 
 function envPresence(value: string | undefined): "set" | "missing" {
-  return value?.trim() ? "set" : "missing";
+  return sanitizeEnv(value) ? "set" : "missing";
+}
+
+/** Trim, strip BOM/newlines, and remove accidental wrapping quotes from Vercel paste. */
+function sanitizeEnv(value: string | undefined): string {
+  if (value == null) return "";
+  let s = String(value).trim();
+  if (s.charCodeAt(0) === 0xfeff) s = s.slice(1);
+  s = s.replace(/\r/g, "").replace(/\n/g, "").trim();
+  if (s.length >= 2 && ((s.startsWith('"') && s.endsWith('"')) || (s.startsWith("'") && s.endsWith("'")))) {
+    s = s.slice(1, -1).trim();
+  }
+  return s;
+}
+
+function looksLikeResendApiKey(key: string): boolean {
+  return key.startsWith("re_") && key.length >= 12;
 }
 
 /** Extract domain from `addr` or `Name <addr>` for Resend dashboard checks — no API secrets. */
@@ -56,7 +76,8 @@ function userMessageForResendFailure(
     return {
       code: "resend_forbidden",
       message:
-        "E-posttjänsten avvisade anropet (API-nyckel eller rättigheter). Kontrollera RESEND_API_KEY i Vercel.",
+        apiMsg ??
+        "Resend svarade med 403. Vanliga orsaker: ogiltig API-nyckel (RESEND_API_KEY), eller att BOOKING_FROM_EMAIL inte använder er verifierade domän när ni skickar till en annan mottagare än kontots egen adress. Kontrollera nyckel och avsändaradress i Vercel och Resend.",
     };
   }
   if (status === 422) {
@@ -122,9 +143,9 @@ export async function POST(request: Request) {
     );
   }
 
-  const resendKey = process.env.RESEND_API_KEY?.trim();
-  const toEmail = process.env.BOOKING_INBOX_EMAIL?.trim();
-  const fromEmail = process.env.BOOKING_FROM_EMAIL?.trim();
+  const resendKey = sanitizeEnv(process.env.RESEND_API_KEY);
+  const toEmail = sanitizeEnv(process.env.BOOKING_INBOX_EMAIL);
+  const fromEmail = sanitizeEnv(process.env.BOOKING_FROM_EMAIL);
 
   const fromDomain = fromEmail ? fromDomainHint(fromEmail) : null;
   console.log(LOG_PREFIX, "BOOKING_FROM_EMAIL domain hint (must be verified in Resend):", fromDomain ?? "(could not parse)");
@@ -151,6 +172,22 @@ export async function POST(request: Request) {
     );
   }
 
+  if (!looksLikeResendApiKey(resendKey)) {
+    console.error(
+      LOG_PREFIX,
+      "RESEND_API_KEY has unexpected shape after sanitize (expected prefix re_)",
+    );
+    return NextResponse.json(
+      {
+        ok: false,
+        error: "email_not_configured",
+        message:
+          "RESEND_API_KEY verkar ogiltig (saknar förväntat format). Kontrollera värdet i Vercel utan extra citattecken eller radbrytningar.",
+      },
+      { status: 503 },
+    );
+  }
+
   const textLines = [
     `Ny förfrågan från webbplatsen`,
     ``,
@@ -172,7 +209,7 @@ export async function POST(request: Request) {
   const resendPayload = {
     from: fromEmail,
     to: [toEmail],
-    reply_to: payload.email,
+    reply_to: [payload.email],
     subject: `Webbförfrågan: ${payload.subject}`,
     text: textBody,
     html: htmlBody,
