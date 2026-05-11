@@ -125,6 +125,7 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
   const [date, setDate] = useState("");
   const [message, setMessage] = useState("");
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
 
   const titleId = useId();
   const nameId = useId();
@@ -160,6 +161,7 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
     setDate("");
     setMessage("");
     setSent(false);
+    setSending(false);
     submitLockRef.current = false;
     setMounted(true);
     requestAnimationFrame(() => {
@@ -271,25 +273,60 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
                     className="mt-7 grid gap-5"
                     onSubmit={async (e) => {
                       e.preventDefault();
-                      if (!canSubmit || submitLockRef.current) return;
+                      console.log("[booking modal] submit handler entered", {
+                        canSubmit,
+                        sending,
+                        locked: submitLockRef.current,
+                      });
+                      if (!canSubmit) {
+                        console.warn(
+                          "[booking modal] submission blocked — canSubmit is false",
+                          {
+                            name,
+                            phone,
+                            emailHasAt: email.includes("@"),
+                            emailLength: email.trim().length,
+                            dateLength: date.trim().length,
+                          },
+                        );
+                        return;
+                      }
+                      if (submitLockRef.current) {
+                        console.warn(
+                          "[booking modal] submission blocked — already in flight",
+                        );
+                        return;
+                      }
                       submitLockRef.current = true;
+                      setSending(true);
                       try {
+                        const payload = {
+                          name,
+                          phone,
+                          email,
+                          date,
+                          subject,
+                          message,
+                        };
+                        console.log(
+                          "[booking modal] POST /api/booking payload",
+                          payload,
+                        );
                         const res = await fetch("/api/booking", {
                           method: "POST",
                           headers: { "Content-Type": "application/json" },
-                          body: JSON.stringify({
-                            name,
-                            phone,
-                            email,
-                            date,
-                            subject,
-                            message,
-                          }),
+                          body: JSON.stringify(payload),
                         });
                         const data = (await res.json().catch(() => ({}))) as {
                           ok?: boolean;
                           error?: string;
+                          missing?: string[];
                         };
+                        console.log(
+                          "[booking modal] response",
+                          res.status,
+                          data,
+                        );
                         if (!res.ok) {
                           console.error(
                             "[booking modal] submit failed",
@@ -297,12 +334,15 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
                             data,
                           );
                           submitLockRef.current = false;
+                          setSending(false);
                           return;
                         }
                         setSent(true);
+                        setSending(false);
                       } catch (err) {
                         console.error("[booking modal] network error", err);
                         submitLockRef.current = false;
+                        setSending(false);
                       }
                     }}
                   >
@@ -385,14 +425,16 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
                       </button>
                       <button
                         type="submit"
-                        disabled={!canSubmit}
+                        aria-disabled={!canSubmit || sending}
                         className={[
                           "inline-flex items-center justify-center gap-2 rounded-xl bg-[#1f5cff] px-6 py-3 text-xs font-bold tracking-[0.18em] text-white shadow-[0_38px_120px_-40px_rgba(31,92,255,1)] ring-1 ring-[#7ea2ff]/35 transition-all duration-500 ease-out hover:bg-[#2b67ff] hover:shadow-[0_48px_150px_-46px_rgba(31,92,255,1)]",
-                          "disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:bg-[#1f5cff] disabled:hover:shadow-[0_38px_120px_-40px_rgba(31,92,255,1)]",
+                          !canSubmit || sending
+                            ? "cursor-not-allowed opacity-45 hover:bg-[#1f5cff] hover:shadow-[0_38px_120px_-40px_rgba(31,92,255,1)]"
+                            : "",
                         ].join(" ")}
                       >
                         <SiteIcon name="mail" className="h-4 w-4" />
-                        Skicka förfrågan
+                        {sending ? "Skickar…" : "Skicka förfrågan"}
                       </button>
                     </div>
                   </form>
