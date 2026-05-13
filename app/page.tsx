@@ -43,7 +43,7 @@ type Service = {
 };
 
 const DEFAULT_IMAGE_FILTER =
-  "brightness-[0.95] contrast-[1.05] saturate-[1.05]";
+  "brightness-[1.18] contrast-[1.08] saturate-[1.14]";
 const DEFAULT_IMAGE_SCALE = "group-hover:scale-[1.06]";
 
 const services: Service[] = [
@@ -60,7 +60,7 @@ const services: Service[] = [
     imageUrl: "/images/student.jpg",
     includes: ["Studentflak"],
     href: "/tjanster/student",
-    imageFilter: "brightness-[0.92] contrast-[1.05] saturate-[1.0]",
+    imageFilter: "brightness-[1.14] contrast-[1.08] saturate-[1.06]",
     imageScaleClass: "scale-[1.10] group-hover:scale-[1.14]",
   },
   {
@@ -93,7 +93,7 @@ const services: Service[] = [
     imageUrl: "/images/hoppborg.jpg",
     includes: ["Hoppborgar"],
     href: "/tjanster/hoppborgar",
-    imageFilter: "brightness-[0.98] contrast-[1.08] saturate-[0.95]",
+    imageFilter: "brightness-[1.18] contrast-[1.1] saturate-[1.08]",
   },
   {
     title: "Fyrverkeri",
@@ -102,7 +102,7 @@ const services: Service[] = [
     includes: ["Fyrverkeri"],
     href: "/tjanster/fyrverkeri",
     imageFilter:
-      "brightness-[0.95] contrast-[1.22] sepia-[0.5] hue-rotate-[180deg] saturate-[1.2]",
+      "brightness-[1.12] contrast-[1.2] sepia-[0.38] hue-rotate-[180deg] saturate-[1.32]",
   },
 ];
 
@@ -194,11 +194,11 @@ export default function HomePage() {
                   aria-hidden="true"
                 />
                 <div
-                  className="pointer-events-none absolute inset-0 bg-[radial-gradient(75%_65%_at_50%_28%,rgba(31,92,255,0.16)_0%,rgba(75,45,140,0.08)_42%,transparent_70%)]"
+                  className="pointer-events-none absolute inset-0 bg-[radial-gradient(75%_65%_at_50%_28%,rgba(31,92,255,0.08)_0%,rgba(75,45,140,0.04)_42%,transparent_70%)]"
                   aria-hidden="true"
                 />
                 <div
-                  className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#050A1A]/35 via-[#080f28]/22 to-[#050A1A]/82"
+                  className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#050A1A]/18 via-[#080f28]/6 to-[#050A1A]/58"
                   aria-hidden="true"
                 />
               </div>
