@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { ContactBar } from "@/app/components/ContactBar";
@@ -13,6 +14,16 @@ import {
   sectionHeading,
   SectionGlow,
 } from "@/app/components/ui";
+import {
+  DEFAULT_OG_IMAGE,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_TAGLINE,
+  SITE_URL,
+  absoluteUrl,
+  breadcrumbJsonLd,
+  jsonLdScript,
+} from "@/app/lib/seo";
 
 type Service = {
   title: string;
@@ -31,7 +42,8 @@ type Service = {
   imageScaleClass?: string;
 };
 
-const DEFAULT_IMAGE_FILTER = "brightness-[0.78] saturate-[0.9]";
+const DEFAULT_IMAGE_FILTER =
+  "brightness-[0.95] contrast-[1.05] saturate-[1.05]";
 const DEFAULT_IMAGE_SCALE = "group-hover:scale-[1.06]";
 
 const services: Service[] = [
@@ -48,7 +60,7 @@ const services: Service[] = [
     imageUrl: "/images/student.jpg",
     includes: ["Studentflak"],
     href: "/tjanster/student",
-    imageFilter: "brightness-[0.66] saturate-[0.88]",
+    imageFilter: "brightness-[0.92] contrast-[1.05] saturate-[1.0]",
     imageScaleClass: "scale-[1.10] group-hover:scale-[1.14]",
   },
   {
@@ -81,7 +93,7 @@ const services: Service[] = [
     imageUrl: "/images/hoppborg.jpg",
     includes: ["Hoppborgar"],
     href: "/tjanster/hoppborgar",
-    imageFilter: "brightness-[0.78] saturate-[0.62]",
+    imageFilter: "brightness-[0.98] contrast-[1.08] saturate-[0.95]",
   },
   {
     title: "Fyrverkeri",
@@ -90,13 +102,49 @@ const services: Service[] = [
     includes: ["Fyrverkeri"],
     href: "/tjanster/fyrverkeri",
     imageFilter:
-      "brightness-[0.78] contrast-[1.18] sepia-[0.5] hue-rotate-[180deg] saturate-[1.15]",
+      "brightness-[0.95] contrast-[1.22] sepia-[0.5] hue-rotate-[180deg] saturate-[1.2]",
   },
 ];
 
+export const metadata: Metadata = {
+  title: {
+    absolute: `${SITE_NAME} – ${SITE_TAGLINE}`,
+  },
+  description: SITE_DESCRIPTION,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    title: `${SITE_NAME} – ${SITE_TAGLINE}`,
+    description: SITE_DESCRIPTION,
+    images: [DEFAULT_OG_IMAGE],
+  },
+};
+
 export default function HomePage() {
+  const breadcrumb = breadcrumbJsonLd([{ name: "Hem", url: "/" }]);
+
+  const itemList = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Tjänster",
+    itemListElement: services.map((s, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: s.title,
+      url: absoluteUrl(s.href),
+    })),
+  };
+
+  const ld = jsonLdScript([breadcrumb, itemList], "ld-home");
+
   return (
     <main className="flex-1 bg-[#050A1A] text-white">
+      <script
+        id={ld.id}
+        type={ld.type}
+        dangerouslySetInnerHTML={{ __html: ld.__html }}
+      />
       <SiteHeroShell>
         <div
           id="hem"
@@ -146,11 +194,11 @@ export default function HomePage() {
                   aria-hidden="true"
                 />
                 <div
-                  className="pointer-events-none absolute inset-0 bg-[radial-gradient(75%_65%_at_50%_28%,rgba(31,92,255,0.22)_0%,rgba(75,45,140,0.12)_42%,transparent_70%)]"
+                  className="pointer-events-none absolute inset-0 bg-[radial-gradient(75%_65%_at_50%_28%,rgba(31,92,255,0.16)_0%,rgba(75,45,140,0.08)_42%,transparent_70%)]"
                   aria-hidden="true"
                 />
                 <div
-                  className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#050A1A]/60 via-[#080f28]/52 to-[#050A1A]/97"
+                  className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#050A1A]/35 via-[#080f28]/22 to-[#050A1A]/82"
                   aria-hidden="true"
                 />
               </div>

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { BookingModalTrigger } from "@/app/components/booking/PremiumBookingModal";
@@ -5,6 +6,13 @@ import { ContactBar } from "@/app/components/ContactBar";
 import { SiteFooter } from "@/app/components/SiteFooter";
 import { SiteHeroShell } from "@/app/components/SiteHeroShell";
 import { SiteIcon } from "@/app/components/SiteIcon";
+import {
+  DEFAULT_OG_IMAGE,
+  absoluteUrl,
+  breadcrumbJsonLd,
+  jsonLdScript,
+  serviceJsonLd,
+} from "@/app/lib/seo";
 import {
   ctaCard,
   ctaPrimary,
@@ -640,6 +648,7 @@ function CategorySection({ c }: { c: RentalCategory }) {
     <section
       id={`cat-${c.key}`}
       className="mx-auto w-full max-w-6xl scroll-mt-24 px-4 pb-14 sm:pb-16"
+      aria-labelledby={`cat-${c.key}-title`}
     >
       <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-7 sm:p-10">
         <div className="grid items-end gap-6 md:grid-cols-[1fr_auto] md:gap-10">
@@ -650,7 +659,7 @@ function CategorySection({ c }: { c: RentalCategory }) {
               </div>
               <div className={eyebrow}>KATEGORI</div>
             </div>
-            <h3 className={`mt-3 ${sectionHeading}`}>{c.title}</h3>
+            <h2 id={`cat-${c.key}-title`} className={`mt-3 ${sectionHeading}`}>{c.title}</h2>
             <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/80">
               {c.intro}
             </p>
@@ -677,9 +686,54 @@ function CategorySection({ c }: { c: RentalCategory }) {
   );
 }
 
+export const metadata: Metadata = {
+  title: "Uthyrning av ljud, ljus, scen, tält & eventutrustning",
+  description:
+    "Hyr proffsig eventutrustning av Söder Entertainment: ljud, PA, ljus, scen, partytält, möbler, effektmaskiner, elverk och servis – i Skåne med jour på samtliga uthyrningar.",
+  alternates: { canonical: "/tjanster/uthyrning" },
+  openGraph: {
+    type: "website",
+    url: absoluteUrl("/tjanster/uthyrning"),
+    title: "Uthyrning av ljud, ljus, scen, tält & eventutrustning",
+    description:
+      "Hyr proffsig eventutrustning av Söder Entertainment: ljud, PA, ljus, scen, partytält, möbler, effektmaskiner, elverk och servis – i Skåne med jour på samtliga uthyrningar.",
+    images: [DEFAULT_OG_IMAGE],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Uthyrning av ljud, ljus, scen, tält & eventutrustning",
+    description:
+      "Hyr proffsig eventutrustning av Söder Entertainment: ljud, PA, ljus, scen, partytält, möbler, effektmaskiner, elverk och servis – i Skåne.",
+  },
+};
+
 export default function UthyrningPage() {
+  const ld = jsonLdScript(
+    [
+      breadcrumbJsonLd([
+        { name: "Hem", url: "/" },
+        { name: "Tjänster", url: "/#tjanster" },
+        { name: "Uthyrning", url: "/tjanster/uthyrning" },
+      ]),
+      serviceJsonLd({
+        name: "Uthyrning",
+        description:
+          "Proffsig utrustning för event i alla storlekar – ljud, ljus, scen, partytält, möbler, effektmaskiner, elverk och servis. Jour på samtliga uthyrningar.",
+        url: "/tjanster/uthyrning",
+        category: "Equipment rental",
+        serviceTypes: rentalCategories.map((c) => c.title),
+      }),
+    ],
+    "ld-uthyrning",
+  );
+
   return (
     <main className="flex-1 bg-[#050A1A] text-white">
+      <script
+        id={ld.id}
+        type={ld.type}
+        dangerouslySetInnerHTML={{ __html: ld.__html }}
+      />
       <SiteHeroShell>
         <div className="mx-auto w-full max-w-6xl px-4 pb-16 pt-12 sm:pb-20 sm:pt-12">
           <div className="mx-auto max-w-3xl text-center">

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -9,6 +10,13 @@ import { ProductBookingGrid } from "@/app/components/ProductBookingGrid";
 import { SiteFooter } from "@/app/components/SiteFooter";
 import { SiteHeroShell } from "@/app/components/SiteHeroShell";
 import { SiteIcon } from "@/app/components/SiteIcon";
+import {
+  DEFAULT_OG_IMAGE,
+  absoluteUrl,
+  breadcrumbJsonLd,
+  jsonLdScript,
+  serviceJsonLd,
+} from "@/app/lib/seo";
 import {
   cardBgImageHoverScale,
   ctaPrimary,
@@ -610,6 +618,38 @@ export function generateStaticParams() {
     .map((category) => ({ category }));
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ category: string }>;
+}): Promise<Metadata> {
+  const { category } = await params;
+  const data = categories[category as CategoryKey];
+  if (!data) return {};
+
+  const path = `/tjanster/${category}`;
+  const title = `${data.title} – Skåne, Malmö & Lund`;
+  const description = data.intro;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: path },
+    openGraph: {
+      type: "website",
+      url: absoluteUrl(path),
+      title,
+      description,
+      images: [DEFAULT_OG_IMAGE],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+  };
+}
+
 function Section({
   title,
   eyebrow: eyebrowText,
@@ -677,8 +717,32 @@ export default async function ServiceCategoryPage({
 
   const heroBookingSubject = CATEGORY_BOOKING_SUBJECT[key];
 
+  const path = `/tjanster/${key}`;
+  const ld = jsonLdScript(
+    [
+      breadcrumbJsonLd([
+        { name: "Hem", url: "/" },
+        { name: "Tjänster", url: "/#tjanster" },
+        { name: data.title, url: path },
+      ]),
+      serviceJsonLd({
+        name: data.title,
+        description: data.intro,
+        url: path,
+        category: "Event",
+        serviceTypes: data.includes,
+      }),
+    ],
+    `ld-tjanster-${key}`,
+  );
+
   return (
     <main className="flex-1 bg-[#050A1A] text-white">
+      <script
+        id={ld.id}
+        type={ld.type}
+        dangerouslySetInnerHTML={{ __html: ld.__html }}
+      />
       <SiteHeroShell>
         <div className="mx-auto w-full max-w-6xl px-4 pb-20 pt-12 sm:pb-24 sm:pt-12">
           <div className="mx-auto max-w-3xl text-center">
@@ -789,9 +853,9 @@ export default async function ServiceCategoryPage({
 
                   <div className={splitShowcaseContentCell}>
                     <div className={eyebrow}>SHOWCASE</div>
-                    <h3 className="mt-3 text-balance text-2xl font-extrabold tracking-tight">
+                    <h2 className="mt-3 text-balance text-2xl font-extrabold tracking-tight">
                       {b.title}
-                    </h3>
+                    </h2>
                     <p className="mt-4 text-sm leading-relaxed text-white/85">
                       {b.text}
                     </p>
