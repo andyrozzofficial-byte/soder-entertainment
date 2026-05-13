@@ -113,7 +113,7 @@ function DateInput({
   return (
     <div
       className={[
-        "group relative flex h-11 w-full items-center gap-1 rounded-xl border-2 border-white/15 bg-[#050A1A]/60 pl-3 pr-1 text-sm text-white",
+        "group relative flex h-11 w-full min-w-0 items-center gap-1 rounded-xl border-2 border-white/15 bg-[#050A1A]/60 pl-3 pr-1 text-sm text-white",
         "ring-1 ring-transparent transition",
         "hover:border-[#7ea2ff]/45 hover:bg-[#0a1733]/55",
         "focus-within:border-[#7ea2ff]/65 focus-within:bg-[#0a1733]/70 focus-within:ring-[#7ea2ff]/35 focus-within:shadow-[0_18px_60px_-30px_rgba(31,92,255,0.65)]",
@@ -147,7 +147,7 @@ function DateInput({
         onClick={openPicker}
         aria-label="Öppna datumväljare"
         className={[
-          "relative z-10 grid h-10 w-11 shrink-0 place-items-center rounded-lg bg-white/[0.06] text-[#cfdcff] ring-1 ring-white/10",
+          "relative z-10 grid h-9 w-10 shrink-0 place-items-center rounded-lg bg-white/[0.06] text-[#cfdcff] ring-1 ring-white/10 sm:h-10 sm:w-11",
           "transition hover:bg-[#1f5cff]/30 hover:text-white hover:ring-[#7ea2ff]/45",
           "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#7ea2ff]/65",
         ].join(" ")}
@@ -297,40 +297,46 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
             onMouseDown={closeBookingModal}
           />
 
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-3 sm:p-6">
+          <div
+            className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-y-auto px-3 py-3 sm:p-6"
+            style={{
+              paddingTop: "max(env(safe-area-inset-top), 0.75rem)",
+              paddingBottom: "max(env(safe-area-inset-bottom), 0.75rem)",
+            }}
+          >
             <div
               role="dialog"
               aria-modal="true"
               aria-labelledby={titleId}
               className={[
-                "pointer-events-auto w-full max-w-xl overflow-hidden rounded-3xl border border-white/10 bg-[#050A1A]/88 shadow-[0_90px_260px_-170px_rgba(0,0,0,0.98)] ring-1 ring-[#7ea2ff]/20 backdrop-blur-xl transition-[opacity,transform] duration-300 ease-out sm:max-w-2xl",
+                "pointer-events-auto my-auto flex max-h-full w-full max-w-xl flex-col overflow-hidden rounded-3xl border border-white/10 bg-[#050A1A]/88 shadow-[0_90px_260px_-170px_rgba(0,0,0,0.98)] ring-1 ring-[#7ea2ff]/20 backdrop-blur-xl transition-[opacity,transform] duration-300 ease-out sm:max-w-2xl",
                 active
                   ? "opacity-100 scale-100 translate-y-0"
                   : "opacity-0 scale-[0.96] translate-y-2",
               ].join(" ")}
               onMouseDown={(e) => e.stopPropagation()}
             >
-              <div className="relative">
+              <div className="relative flex max-h-full min-h-0 flex-col">
                 <div
                   className="pointer-events-none absolute inset-0 bg-[radial-gradient(65%_55%_at_50%_0%,rgba(31,92,255,0.26)_0%,rgba(5,10,26,0.12)_45%,rgba(5,10,26,0.88)_100%)]"
                   aria-hidden="true"
                 />
-                <div className="relative p-5 sm:p-8">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <div className="text-xs font-bold tracking-[0.32em] text-[#9bb8ff]">
+                <div className="relative flex min-h-0 flex-1 flex-col overflow-y-auto p-4 sm:p-8">
+                  <div className="flex items-start justify-between gap-3 sm:gap-4">
+                    <div className="min-w-0 flex-1">
+                      <div className="text-[10px] font-bold tracking-[0.32em] text-[#9bb8ff] sm:text-xs">
                         FÖRFRÅGAN
                       </div>
                       <h2
                         id={titleId}
-                        className="mt-3 text-balance text-2xl font-extrabold tracking-tight text-white sm:text-3xl"
+                        className="mt-2 text-balance text-xl font-extrabold tracking-tight text-white sm:mt-3 sm:text-3xl"
                       >
                         {subject === DEFAULT_BOOKING_SUBJECT
                           ? "Kontakta oss"
                           : `Offert / förfrågan`}
                       </h2>
                       <p className="mt-2 text-sm leading-relaxed text-white/80">
-                        <span className="font-semibold text-white/90">
+                        <span className="break-words font-semibold text-white/90">
                           {subject}
                         </span>
                         <span className="text-white/65">
@@ -342,7 +348,7 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
                     <button
                       type="button"
                       onClick={closeBookingModal}
-                      className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-white/10 bg-white/[0.06] text-white/85 transition hover:bg-white/12 hover:text-white"
+                      className="sticky top-0 grid h-11 w-11 shrink-0 place-items-center rounded-full border border-white/10 bg-[#050A1A]/85 text-white/85 backdrop-blur transition hover:bg-white/12 hover:text-white"
                       aria-label="Stäng"
                     >
                       ✕
@@ -350,7 +356,7 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
                   </div>
 
                   <form
-                    className="mt-7 grid gap-5"
+                    className="mt-5 grid gap-4 sm:mt-7 sm:gap-5"
                     onSubmit={async (e) => {
                       e.preventDefault();
                       console.log("[booking modal] submit handler entered", {
@@ -444,8 +450,8 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
                       }
                     }}
                   >
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      <div className="grid gap-2">
+                    <div className="grid gap-4 sm:grid-cols-2 sm:gap-4">
+                      <div className="grid gap-1.5 sm:gap-2">
                         <FieldLabel htmlFor={nameId}>NAMN</FieldLabel>
                         <Input
                           id={nameId}
@@ -454,7 +460,7 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
                           placeholder="Ditt namn"
                         />
                       </div>
-                      <div className="grid gap-2">
+                      <div className="grid gap-1.5 sm:gap-2">
                         <FieldLabel htmlFor={phoneId}>TELEFON</FieldLabel>
                         <Input
                           id={phoneId}
@@ -465,8 +471,8 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
                       </div>
                     </div>
 
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      <div className="grid gap-2">
+                    <div className="grid gap-4 sm:grid-cols-2 sm:gap-4">
+                      <div className="grid gap-1.5 sm:gap-2">
                         <FieldLabel htmlFor={emailId}>E-POST</FieldLabel>
                         <Input
                           id={emailId}
@@ -476,7 +482,7 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
                           placeholder="din@epost.se"
                         />
                       </div>
-                      <div className="grid gap-2">
+                      <div className="grid gap-1.5 sm:gap-2">
                         <FieldLabel htmlFor={dateId}>DATUM</FieldLabel>
                         <DateInput
                           id={dateId}
@@ -486,14 +492,14 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
                       </div>
                     </div>
 
-                    <div className="grid gap-2">
+                    <div className="grid gap-1.5 sm:gap-2">
                       <FieldLabel htmlFor={serviceId}>
                         TJÄNST / PRODUKT
                       </FieldLabel>
                       <Input id={serviceId} value={subject} readOnly />
                     </div>
 
-                    <div className="grid gap-2">
+                    <div className="grid gap-1.5 sm:gap-2">
                       <FieldLabel htmlFor={messageId}>MEDDELANDE</FieldLabel>
                       <TextArea
                         id={messageId}
@@ -516,7 +522,7 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
                       <button
                         type="button"
                         onClick={closeBookingModal}
-                        className="inline-flex items-center justify-center gap-2 rounded-xl bg-white/[0.08] px-6 py-3 text-xs font-bold tracking-[0.18em] text-white ring-1 ring-white/15 transition hover:bg-white/[0.12] hover:shadow-[0_28px_90px_-44px_rgba(31,92,255,0.85)]"
+                        className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white/[0.08] px-6 py-3 text-xs font-bold tracking-[0.18em] text-white ring-1 ring-white/15 transition hover:bg-white/[0.12] hover:shadow-[0_28px_90px_-44px_rgba(31,92,255,0.85)] sm:w-auto"
                       >
                         Stäng
                       </button>
@@ -524,7 +530,7 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
                         type="submit"
                         aria-disabled={!canSubmit || sending}
                         className={[
-                          "inline-flex items-center justify-center gap-2 rounded-xl bg-[#1f5cff] px-6 py-3 text-xs font-bold tracking-[0.18em] text-white shadow-[0_38px_120px_-40px_rgba(31,92,255,1)] ring-1 ring-[#7ea2ff]/35 transition-all duration-500 ease-out hover:bg-[#2b67ff] hover:shadow-[0_48px_150px_-46px_rgba(31,92,255,1)]",
+                          "inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#1f5cff] px-6 py-3 text-xs font-bold tracking-[0.18em] text-white shadow-[0_38px_120px_-40px_rgba(31,92,255,1)] ring-1 ring-[#7ea2ff]/35 transition-all duration-500 ease-out hover:bg-[#2b67ff] hover:shadow-[0_48px_150px_-46px_rgba(31,92,255,1)] sm:w-auto",
                           !canSubmit || sending
                             ? "cursor-not-allowed opacity-45 hover:bg-[#1f5cff] hover:shadow-[0_38px_120px_-40px_rgba(31,92,255,1)]"
                             : "",
