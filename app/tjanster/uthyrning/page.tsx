@@ -704,6 +704,7 @@ export const metadata: Metadata = {
     title: "Uthyrning av ljud, ljus, scen, tält & eventutrustning",
     description:
       "Hyr proffsig eventutrustning av Söder Entertainment: ljud, PA, ljus, scen, partytält, möbler, effektmaskiner, elverk och servis – i Skåne.",
+    images: [DEFAULT_OG_IMAGE.url],
   },
 };
 

@@ -25,6 +25,21 @@ export const SITE_TAGLINE = "Event, ljud, ljus & fyrverkeri i Skåne";
 export const SITE_DESCRIPTION =
   "Söder Entertainment skapar premium event i Skåne sedan 2005 – ljud, ljus, scen, DJ, studentflak, hoppborgar, fyrverkeri och eventuthyrning.";
 
+/**
+ * Default Open Graph / Twitter share card. The URL is the Next.js
+ * file-convention route `app/opengraph-image.tsx`, which is rendered as a
+ * real 1200×630 PNG at build time. Because `metadataBase` is set to
+ * SITE_URL in the root layout, the relative URL below is automatically
+ * resolved to an absolute https URL in production, e.g.
+ * https://www.soderentertainment.com/opengraph-image
+ */
+export const DEFAULT_OG_IMAGE = {
+  url: "/opengraph-image",
+  width: 1200,
+  height: 630,
+  alt: "Söder Entertainment – Event, ljud, ljus & fyrverkeri i Skåne",
+} as const;
+
 export const SITE_KEYWORDS = [
   "event Skåne",
   "eventbyrå Malmö",
@@ -39,13 +54,6 @@ export const SITE_KEYWORDS = [
   "kick off företag",
   "Söder Entertainment",
 ];
-
-export const DEFAULT_OG_IMAGE = {
-  url: `${SITE_URL}/soder-logo.png`,
-  width: 1200,
-  height: 630,
-  alt: `${SITE_NAME} – ${SITE_TAGLINE}`,
-};
 
 export const BUSINESS = {
   legalName: "Söder Entertainment",

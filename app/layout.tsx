@@ -65,6 +65,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+    site: "@soderentertainment",
+    creator: "@soderentertainment",
     title: `${SITE_NAME} – ${SITE_TAGLINE}`,
     description: SITE_DESCRIPTION,
     images: [DEFAULT_OG_IMAGE.url],
