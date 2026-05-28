@@ -12,6 +12,7 @@ import {
   type ReactNode,
 } from "react";
 
+import { ContactPersons } from "@/app/components/ContactPersons";
 import { SiteIcon } from "@/app/components/SiteIcon";
 
 export const DEFAULT_BOOKING_SUBJECT = "Allmän förfrågan";
@@ -355,8 +356,10 @@ export function BookingModalProvider({ children }: { children: ReactNode }) {
                     </button>
                   </div>
 
+                  <ContactPersons variant="modal" />
+
                   <form
-                    className="mt-5 grid gap-4 sm:mt-7 sm:gap-5"
+                    className="mt-4 grid gap-4 sm:mt-5 sm:gap-5"
                     onSubmit={async (e) => {
                       e.preventDefault();
                       console.log("[booking modal] submit handler entered", {
