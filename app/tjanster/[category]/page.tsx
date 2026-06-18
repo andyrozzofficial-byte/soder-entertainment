@@ -503,6 +503,11 @@ const categories: Record<string, CategoryContent> = {
           imageUrl: "/images/hoppborgar/prinsessborgen.png",
         },
         {
+          title: "Prinsess Slottet",
+          pricePerDay: "1200 kr/dag",
+          imageUrl: "/images/hoppborgar/prinsess-slottet.jpg",
+        },
+        {
           title: "Gula Borgen",
           pricePerDay: "500 kr/dag",
           imageUrl: "/images/hoppborgar/gula-borgen.png",
