@@ -317,7 +317,7 @@ const rentalCategories: RentalCategory[] = [
         price: "250 kr/dygn",
       },
       { title: "Strobe 750 W", price: "100 kr/dygn" },
-      { title: "Strobe 1 500 W", price: "100 kr/dygn" },
+      { title: "Strobe 1 500 W", price: "175 kr/dygn" },
       {
         title: "Scanners — Dynamo / Rover / LED",
         price: "150 kr/dygn",
